@@ -1,14 +1,14 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-bemobile-blue-primary: #0500ff;
-  --color-bemobile-blue-10: #edeffb;
-  --color-bemobile-black: #1c1c1c;
-  --color-bemobile-gray-20: #9e9e9e;
-  --color-bemobile-gray-10: #dfdfdf;
-  --color-bemobile-gray-05: #f5f5f5;
-  --color-bemobile-gray-00: #f0f0f0;
-  --color-bemobile-white: #ffffff;
+  --color-betalent-blue-primary: #0500ff;
+  --color-betalent-blue-10: #edeffb;
+  --color-betalent-black: #1c1c1c;
+  --color-betalent-gray-20: #9e9e9e;
+  --color-betalent-gray-10: #dfdfdf;
+  --color-betalent-gray-05: #f5f5f5;
+  --color-betalent-gray-00: #f0f0f0;
+  --color-betalent-white: #ffffff;
   --font-family-base: Helvetica, Arial, sans-serif;
 }
 
