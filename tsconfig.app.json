@@ -20,7 +20,18 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    /* Path aliases */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@/components/*": ["src/components/*"],
+      "@/libs/*": ["src/libs/*"],
+      "@/types/*": ["src/types/*"],
+      "@/enums/*": ["src/enums/*"],
+      "@/assets/*": ["src/assets/*"]
+    }
   },
   "include": ["src"]
 }
