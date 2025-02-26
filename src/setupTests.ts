@@ -14,7 +14,7 @@ interface SVGProps {
   className?: string;
   'aria-hidden'?: boolean;
   'aria-label'?: string;
-  [key: string]: any;
+  [key: string]: string | boolean | undefined;
 }
 
 // Mock SVG imports

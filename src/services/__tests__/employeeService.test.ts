@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import axios, { AxiosError } from 'axios';
+import axios, { type AxiosError, type AxiosResponse } from 'axios';
 import { employeeService } from '../employeeService';
 import { mockEmployee } from '@/components/__tests__/mockData';
 import { ErrorMessages } from '@/constants/errorMessages';
@@ -50,7 +50,7 @@ describe('employeeService', () => {
 
     it('should handle 404 errors with invalid data', async () => {
       const notFoundError = new Error('Not Found') as AxiosError;
-      notFoundError.response = { status: 404 } as any;
+      notFoundError.response = { status: 404 } as AxiosResponse;
       mockedAxios.get.mockRejectedValueOnce(notFoundError);
 
       const result = await employeeService.getEmployees();
@@ -108,7 +108,7 @@ describe('employeeService', () => {
 
     it('should handle 404 errors when employee not found', async () => {
       const notFoundError = new Error('Not Found') as AxiosError;
-      notFoundError.response = { status: 404 } as any;
+      notFoundError.response = { status: 404 } as AxiosResponse;
       mockedAxios.get.mockRejectedValueOnce(notFoundError);
 
       const result = await employeeService.getEmployeeById(1);
