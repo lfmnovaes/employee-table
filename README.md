@@ -2,6 +2,15 @@
 
 A React application for viewing employee data with a responsive design.
 
+## Application Architecture
+
+This application uses a monorepo approach with:
+
+- React frontend (Vite)
+- JSON Server backend for API simulation
+
+Both services run simultaneously using the `concurrently` package, which enables launching multiple commands in parallel with a single NPM script.
+
 ## Docker Setup
 
 ### Run with Docker
@@ -31,7 +40,7 @@ docker compose down
 
 ### Prerequisites
 
-- Node.js
+- Node.js LTS (20.x)
 - Yarn
 
 ### Setup
