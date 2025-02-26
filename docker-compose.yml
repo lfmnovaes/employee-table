@@ -1,0 +1,12 @@
+services:
+  employee-table:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: employee-table
+    ports:
+      - '3000:3000'
+      - '5173:5173'
+    volumes:
+      - ./db.json:/app/db.json
+    restart: unless-stopped

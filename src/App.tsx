@@ -1,32 +1,67 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, Suspense, lazy } from 'react';
 
-import EmployeeTable from '@/components/EmployeeTable';
 import Navbar from '@/components/Navbar';
 import SearchInput from '@/components/SearchInput';
-import { temporaryEmployeesData } from './data/employees'; // Temporary data
 import type { Employee } from '@/types/employee';
 import { formatDate, formatPhone } from '@/libs/formatters';
+import employeeService from '@/services/employeeService';
+
+const EmployeeTable = lazy(() => import('@/components/EmployeeTable'));
+
+const ErrorMessage = ({ message }: { message: string }) => (
+  <div className="text-center py-8 text-red-500">
+    <p>{message}</p>
+  </div>
+);
+
+const LoadingSpinner = () => (
+  <div className="text-center py-8">
+    <p className="text-betalent-black">Carregando funcionários...</p>
+  </div>
+);
 
 function App() {
-  const [filteredEmployees, setFilteredEmployees] = useState<Employee[]>(temporaryEmployeesData);
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [filteredEmployees, setFilteredEmployees] = useState<Employee[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSearch = useCallback((query: string) => {
-    if (!query.trim()) {
-      setFilteredEmployees(temporaryEmployeesData);
-      return;
-    }
+  // Fetch employees from API
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      const response = await employeeService.getEmployees();
 
-    const lowercaseQuery = query.toLowerCase();
-    const filtered = temporaryEmployeesData.filter(
-      (employee: Employee) =>
-        employee.name.toLowerCase().includes(lowercaseQuery) ||
-        employee.job.toLowerCase().includes(lowercaseQuery) ||
-        formatDate(employee.admission_date).includes(lowercaseQuery) ||
-        formatPhone(employee.phone).includes(lowercaseQuery)
-    );
+      if (response.success && response.data) {
+        setEmployees(response.data);
+        setFilteredEmployees(response.data);
+        setError(null);
+      } else {
+        setError(response.error || 'An unknown error occurred');
+      }
+    };
 
-    setFilteredEmployees(filtered);
+    fetchEmployees();
   }, []);
+
+  const handleSearch = useCallback(
+    (query: string) => {
+      if (!query.trim()) {
+        setFilteredEmployees(employees);
+        return;
+      }
+
+      const lowercaseQuery = query.toLowerCase();
+      const filtered = employees.filter(
+        (employee: Employee) =>
+          employee.name.toLowerCase().includes(lowercaseQuery) ||
+          employee.job.toLowerCase().includes(lowercaseQuery) ||
+          formatDate(employee.admission_date).includes(lowercaseQuery) ||
+          formatPhone(employee.phone).includes(lowercaseQuery)
+      );
+
+      setFilteredEmployees(filtered);
+    },
+    [employees]
+  );
 
   return (
     <div className="min-h-screen bg-betalent-gray-00">
@@ -39,7 +74,13 @@ function App() {
               <SearchInput onSearch={handleSearch} />
             </div>
           </div>
-          <EmployeeTable employees={filteredEmployees} />
+          {error ? (
+            <ErrorMessage message={error} />
+          ) : (
+            <Suspense fallback={<LoadingSpinner />}>
+              <EmployeeTable employees={filteredEmployees} />
+            </Suspense>
+          )}
         </div>
       </div>
     </div>
